@@ -1,22 +1,34 @@
 #include <vector>
 #include <iostream>
+#include <set>
 using namespace std;
 
-class Solution {
-public:
-	int pivotIndex(vector<int>& nums) {
-		long left_sum = 0, sum_1 = 0;
-		for (vector<int>::iterator i = nums.begin(); i<nums.end(); i++) {
-			sum_1 += *i;
-		}
-		for (vector<int>::iterator j = nums.begin(); j<nums.end(); j++) {
-			if ((sum_1 - left_sum - *j) == left_sum) {
-				return j - nums.begin();
-			}
-			else {
-				left_sum += *j;
-			}
-		}
-		return -1;
+set<int> value_set;
+
+int ite(int n) {
+	int mod = 0;
+	int addition = 0;
+	while (n) {
+		mod = n % 10;
+		n = n / 10;
+		addition += mod*mod;
 	}
-};
+	return addition;
+}
+bool isHappy(int n) {
+	int re = ite(n);
+	while (re != 1) {
+		if (value_set.count(re) == 0)
+			value_set.insert(re);
+		else
+			return false;
+		re = ite(re);
+	}
+	return  true;
+
+}
+
+void main() {
+	bool a = isHappy(7);
+	int b = 0;
+}
