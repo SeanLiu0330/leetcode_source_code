@@ -24,49 +24,31 @@ using namespace std;
 
 
  
-struct matrix {
-	int m[2][2];
-	matrix() {
-		m[0][0] = 1;
-		m[1][1] = 1;
-		m[0][1] = 0;
-		m[1][0] = 0;
-	}
-};
-matrix matrixmul(matrix a, matrix b) {
-	matrix temp = matrix();
-	for (int i = 0; i<2; i++) {
-		for (int j = 0; j<2; j++) {
-			temp.m[i][j] = a.m[i][0] * b.m[0][j] + a.m[i][1] * b.m[1][j];
+int findShortestSubArray(vector<int>& nums) {
+	map<int, vector<vector<int>::iterator>> re;
+	int long_num = nums[0] , num_times = 1;
+	for (vector<int>::iterator i = nums.begin(); i != nums.end(); i++) {
+		re[*i].push_back(i);
+		if (re[*i].size() == 1) {
+			//long_num = *i;
+			continue;
+		}
+		if (re[*i].size()>num_times ) {
+			num_times = re[*i].size();
+			long_num = *i;
+		}
+		if (re[*i].size() == num_times ) {
+			if ((i - re[*i][0]) < (*(re[long_num].end() - 1)) - *(re[long_num].begin())) {
+				num_times = re[*i].size();
+				long_num = *i;
+			}			
 		}
 	}
-	return temp;
-}
-matrix Q(matrix base, int n) {
-	matrix ans = matrix();
-	while (n) {
-		if (n & 1)
-			ans = matrixmul(base, ans);
-		base = matrixmul(base, base);
-		n >>=1;
-	}
-	return ans;
-}
-int climbStairs(int n) {
-	matrix base = matrix();
-	matrix origin = matrix();
-	base.m[0][1] = 1;
-	base.m[1][0] = 1;
-	base.m[1][1] = 0;
-	origin.m[1][0] = 1;
-	origin.m[1][1] = 0;
-	matrix final_mat = Q(base, n);
-	matrix re = matrixmul(final_mat, origin);
-	return re.m[1][0];
-
+	return *(re[long_num].end()-1) - *(re[long_num].begin());
 }
 void main() {
-	int t = climbStairs(44);
+	vector<int> nums = {1,2,2,3,1};
+	int t = findShortestSubArray(nums);
 	int c = 0;
 }
 
