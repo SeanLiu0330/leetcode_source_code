@@ -24,31 +24,31 @@ using namespace std;
 
 
  
-int findShortestSubArray(vector<int>& nums) {
-	map<int, vector<vector<int>::iterator>> re;
-	int long_num = nums[0] , num_times = 1;
-	for (vector<int>::iterator i = nums.begin(); i != nums.end(); i++) {
-		re[*i].push_back(i);
-		if (re[*i].size() == 1) {
-			//long_num = *i;
-			continue;
+class Solution {
+public:
+	int removeElement(vector<int>& nums, int val) {
+		/*
+		auto v = std::remove(nums.begin(), nums.end(), val);
+		int sz = distance(nums.begin(), v);
+		//nums.resize(sz);
+		return sz;
+		*/
+
+
+		int sz = nums.size();
+		if (sz == 0) return 0;
+		while (nums[sz - 1] == val && sz >0) sz--;
+		for (int i = 0; i<sz; ++i) {
+			if (nums[i] == val) {
+				nums[i] = nums[sz - 1];
+				sz--;
+				while (nums[sz - 1] == val) sz--;
+			}
 		}
-		if (re[*i].size()>num_times ) {
-			num_times = re[*i].size();
-			long_num = *i;
-		}
-		if (re[*i].size() == num_times ) {
-			if ((i - re[*i][0]) < (*(re[long_num].end() - 1)) - *(re[long_num].begin())) {
-				num_times = re[*i].size();
-				long_num = *i;
-			}			
-		}
+		nums.resize(sz);
+		return sz;
+
 	}
-	return *(re[long_num].end()-1) - *(re[long_num].begin());
-}
-void main() {
-	vector<int> nums = {1,2,2,3,1};
-	int t = findShortestSubArray(nums);
-	int c = 0;
-}
+};
+
 
