@@ -50,5 +50,11 @@ public:
 
 	}
 };
-
+void main() {
+	string a = "12345";
+	for (string::iterator i = a.begin(); i != a.end(); i++) {
+		cout << *i << endl;
+	}
+	int b = 0;
+}
 
