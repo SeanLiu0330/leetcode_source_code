@@ -3,7 +3,6 @@
 #include <set>
 #include <queue>
 #include <string>
-#include <map>
 using namespace std;
 
 /**
@@ -23,38 +22,62 @@ using namespace std;
 // 补码求反变为原码的时候 符号位同样不变；
 
 
+ struct TreeNode {
+     int val;
+     TreeNode *left;
+     TreeNode *right;
+     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ };
+ TreeNode* root = new TreeNode(3);
+ TreeNode* root2 = new TreeNode(4);
+
+ bool equalornot(TreeNode* root1, TreeNode* root2, bool& flag) {
+	 if (!flag)
+		 return false;
+	 if ((root1 == NULL && root2 == NULL)) {
+		 return true;
+	 }
+	 else if (root1 == NULL || root2 == NULL) {
+		 flag = false;
+		 return false;
+	 }
+	 else if (root1->val != root2->val)
+		 return flag = false;
+
+	 equalornot(root1->left, root2->left, flag);
+	 equalornot(root1->right, root2->right, flag);
+	 return flag;
+
+
+ }
+ bool isSubtree(TreeNode* s, TreeNode* t) {
+	 bool flag = false;
+	 queue<TreeNode*> treeque;
+	 treeque.push(s);
+	 while (!treeque.empty()) {
+		 bool flag1 = 1;
+		 TreeNode* root1 = treeque.front();
+		 treeque.pop();
+		 if (flag = equalornot(root1, t, flag1)) {
+			 break;
+		 }
+		 if (root1->left != NULL)
+			 treeque.push(root1->left);
+		 if (root1->right != NULL)
+			 treeque.push(root1->right);
+	 }
+	 return flag;
+ }
+
  
-class Solution {
-public:
-	int removeElement(vector<int>& nums, int val) {
-		/*
-		auto v = std::remove(nums.begin(), nums.end(), val);
-		int sz = distance(nums.begin(), v);
-		//nums.resize(sz);
-		return sz;
-		*/
 
-
-		int sz = nums.size();
-		if (sz == 0) return 0;
-		while (nums[sz - 1] == val && sz >0) sz--;
-		for (int i = 0; i<sz; ++i) {
-			if (nums[i] == val) {
-				nums[i] = nums[sz - 1];
-				sz--;
-				while (nums[sz - 1] == val) sz--;
-			}
-		}
-		nums.resize(sz);
-		return sz;
-
-	}
-};
 void main() {
-	string a = "12345";
-	for (string::iterator i = a.begin(); i != a.end(); i++) {
-		cout << *i << endl;
-	}
-	int b = 0;
+	root->left = new TreeNode(4);
+	root->right = new TreeNode(5);
+	root->left->left = new TreeNode(1);
+	root->left->right = new TreeNode(2);
+	root2->left = new TreeNode(1);
+	root2->right = new TreeNode(2);
+	bool f = isSubtree(root, root2);
+	bool d = 0;
 }
-
