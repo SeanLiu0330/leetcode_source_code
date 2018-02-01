@@ -1,9 +1,10 @@
+#pragma once
+#include "leetcode.h"
 #include <vector>
 #include <iostream>
 #include <set>
 #include <queue>
-#include <string>
-using namespace std;
+
 
 /**
 * Definition for a binary tree node.
@@ -69,10 +70,50 @@ using namespace std;
 	 }
 	 return flag;
  }
-
+ vector<int> findAnagrams(string s, string p) {
+	 vector<int> res;
+	 vector<string::size_type> sta;
+	 int len_s = s.length(), len_p = p.length();
+	 for (int i = 0; i<len_s; i++) {
+		 if (i<len_p) {
+			 string::size_type index = p.find_first_of(s[i]);
+			 sta.push_back(index);
+			 if (index != string::npos) {
+				 p.erase(p.begin() + index);
+			 }
+			 if (i == len_p - 1) {
+				 if (p.empty())
+					 res.push_back(i + 1 - len_p);
+				 continue;
+			 }
+		 }
+		 else {
+			 if (s[i] == s[i - len_p] && false) {
+				 if (p.empty())
+					 res.push_back(i + 1 - len_p);
+				 if (sta[i - len_p] != string::npos)
+					 p.insert(p.end(), 1, s[i - len_p]);
+				 continue;
+			 }
+			 else {
+				 if (sta[i - len_p] != string::npos)
+					 p.insert(p.end(), 1, s[i - len_p]);
+				 string::size_type index = p.find_first_of(s[i]);
+				 sta.push_back(index);
+				 if (index != string::npos) {
+					 p.erase(p.begin() + index);
+				 }
+				 if (p.empty())
+					 res.push_back(i + 1 - len_p);
+			 }
+		 }
+	 }
+	 return res;
+ }
  
 
 void main() {
+	vector<int> res = findAnagrams(sss, ppp);
 	root->left = new TreeNode(4);
 	root->right = new TreeNode(5);
 	root->left->left = new TreeNode(1);
